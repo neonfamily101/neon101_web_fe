@@ -27,7 +27,7 @@ export default function Footer() {
                             </div>
                             <div className="flex flex-col sm:flex-row sm:gap-4">
                                 <span className="text-slate-11 min-w-[60px]">Email:</span>
-                                <span className="text-slate-11 break-all">neon101t@neon101.ai</span>
+                                <span className="text-slate-11 break-all">neon101@neon101.ai</span>
                             </div>
                             <div className="flex flex-col sm:flex-row sm:gap-4">
                                 <span className="text-slate-11 min-w-[60px]">Address:</span>
