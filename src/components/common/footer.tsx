@@ -23,7 +23,7 @@ export default function Footer() {
                         <FooterBlock title="NEON101">
                             <div className="flex flex-col sm:flex-row sm:gap-4">
                                 <span className="text-slate-11 min-w-[60px]">Tel:</span>
-                                <span className="text-slate-11">010-2486-2358</span>
+                                <span className="text-slate-11">02-562-1101</span>
                             </div>
                             <div className="flex flex-col sm:flex-row sm:gap-4">
                                 <span className="text-slate-11 min-w-[60px]">Email:</span>
