@@ -65,7 +65,7 @@ export default function VideoSlider() {
     const handleSlideClick = useCallback((slide: typeof videoSlides[0]) => {
         console.log('Video slide clicked:', slide.title);
         setModalVideoSrc(slide.src);
-        setModalVideoSubSrc(slide.src);
+        setModalVideoSubSrc(slide.subSrc);
         setModalTitle(slide.title);
         setModalOpen(true);
         setIsPaused(true); // 모달이 열리면 슬라이더 일시정지
@@ -107,7 +107,7 @@ export default function VideoSlider() {
                         <VideoSlide
                             key={`slide-${index}`}
                             src={slide.src}
-                            subSrc={slide.src}
+                            subSrc={slide.subSrc}
                             title={slide.title}
                             isActive={currentSlide === index}
                             onClick={() => handleSlideClick(slide)}
