@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "neon101"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
