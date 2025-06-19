@@ -7,8 +7,7 @@ export function middleware(request: NextRequest) {
 
   // www가 없는 경우 www로 리디렉션
   if (host === 'neon101.ai') {
-    url.hostname = 'www.neon101.ai';
-    return NextResponse.redirect(url, 301);
+    return NextResponse.redirect(`https://www.neon101.ai${url.pathname}`, 301);
   }
 
   return NextResponse.next();
