@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@theme {
+  --default-transition-duration: 150ms;
+}
+
+/* header-slide-down-fade 키프레임 정의 */
+@keyframes header-slide-down-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 항상 다크 모드로 설정 */
+:root {
+  --background: #05050a;
+  --foreground: #ededed;
+  --font-abc-favorit: 'ABCFavoritMono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-arial: Arial, Helvetica, sans-serif;
+  --font-display: var(--font-arial);
+}
+
+/* 다크 모드 클래스도 동일하게 설정 */
+.dark {
+  --background: #05050a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-abc: var(--font-abc-favorit);
+  --font-display: var(--font-display);
+  --font-arial: var(--font-arial);
+  --font-inter: var(--font-inter);
+
+  /* 커스텀 애니메이션 추가 */
+  --animate-header-slide-down-fade: header-slide-down-fade 1s ease-in-out;
+
+  /* Slate colors with Display P3 support and RGB fallback */
+  --color-slate-1: rgb(0 0 0 / 0);
+  --color-slate-1: color(display-p3 0 0 0 / 0);
+
+  --color-slate-2: rgb(223 253 255 / 0.034);
+  --color-slate-2: color(display-p3 0.875 0.992 1 / 0.034);
+
+  --color-slate-3: rgb(225 238 253 / 0.077);
+  --color-slate-3: color(display-p3 0.882 0.933 0.992 / 0.077);
+
+  --color-slate-4: rgb(225 243 254 / 0.111);
+  --color-slate-4: color(display-p3 0.882 0.953 0.996 / 0.111);
+
+  --color-slate-5: rgb(224 237 254 / 0.145);
+  --color-slate-5: color(display-p3 0.878 0.929 0.996 / 0.145);
+
+  --color-slate-6: rgb(225 242 254 / 0.183);
+  --color-slate-6: color(display-p3 0.882 0.949 0.996 / 0.183);
+
+  --color-slate-7: rgb(225 237 255 / 0.246);
+  --color-slate-7: color(display-p3 0.882 0.929 1 / 0.246);
+
+  --color-slate-8: rgb(222 239 255 / 0.361);
+  --color-slate-8: color(display-p3 0.871 0.937 1 / 0.361);
+
+  --color-slate-9: rgb(229 239 255 / 0.42);
+  --color-slate-9: color(display-p3 0.898 0.937 1 / 0.42);
+
+  --color-slate-10: rgb(234 241 255 / 0.475);
+  --color-slate-10: color(display-p3 0.918 0.945 1 / 0.475);
+
+  --color-slate-11: rgb(242 247 254 / 0.708);
+  --color-slate-11: color(display-p3 0.949 0.969 0.996 / 0.708);
+
+  --color-slate-12: rgb(252 253 255 / 0.937);
+  --color-slate-12: color(display-p3 0.988 0.992 1 / 0.937);
+
+  /* 화이트 컬러도 정의 */
+  --color-white: #ffffff;
+}
+
+/* 커스텀 애니메이션 클래스 직접 정의 */
+.animate-header-slide-down-fade {
+  animation: header-slide-down-fade 1s ease-in-out;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@font-face {
+  font-family: 'ABCFavoritMono';
+  src: url('/fonts/ABCFavoritMono-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.rainbow-border {
+  --angle: 0deg;
+  animation: rotate 20s linear infinite;
+  background: linear-gradient(var(--angle), #02fcef70 0, #ffb52b70 50%, #a02bfe70 100%);
+  height: 32px;
+  position: relative;
+}
+
+.rainbow-border:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(var(--angle), #02fcef70 0, #ffb52b70 50%, #a02bfe70 100%);
+  transform: scale(.95, .6);
+  filter: blur(20px);
+  transition: all .4s ease-out;
+  opacity: 1;
+  animation: rotate 20s linear infinite;
+  border-radius: inherit;
+}
+
+.rainbow-border span {
+  width: calc(100% - 2px);
+  height: calc(32px - 2px);
+  background-color: #0b0e14;
+  transition: all .2s ease-out;
+}
+
+.effect-font-hero {
+  -webkit-text-stroke: .4px #ffffff80;
+  -webkit-text-fill-color: transparent;
+  text-shadow: -1px -1px #fff3, 1px 1px #0000001a;
+}
+
+.effect-font-gradient {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+}
+
+/* 다크모드에서도 동일하게 적용 */
+.dark .effect-font-gradient {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+  background: none !important;
+}
+
+.effect-font-styling {
+  font-feature-settings: "ss01", "ss04", "ss11";
+}
+
+:root {
+  --animate-hero-text-slide-up-fade: hero-text-slide-up-fade 1s ease-in-out;
+}
+
+.animate-hero-text-slide-up-fade {
+  animation: var(--animate-hero-text-slide-up-fade, hero-text-slide-up-fade 1s ease-in-out);
+}
+
+@keyframes hero-text-slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade-in up scroll reveal */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  will-change: opacity, transform;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
