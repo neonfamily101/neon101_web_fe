@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # 3000번 포트 사용
-EXPOSE 8080
+EXPOSE 3000
 
 # 앱 실행
 CMD ["npm", "start"]
