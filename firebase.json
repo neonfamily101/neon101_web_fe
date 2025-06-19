@@ -1,24 +1,28 @@
 {
-  "hosting": {
-    "public": "public/videos",
-    "ignore": [
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(webm|mp4)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000, immutable"
-          },
-          {
-            "key": "Content-Encoding",
-            "value": "gzip"
-          }
-        ]
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "www",
+      "public": "public/videos",
+      "ignore": ["**/.*", "**/node_modules/**"],
+      "headers": [
+        {
+          "source": "**/*.@(webm|mp4)",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+            { "key": "Content-Encoding", "value": "gzip" }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "root-redirect",
+      "redirects": [
+        {
+          "source": "/**",
+          "destination": "https://www.neon101.ai",
+          "type": 301
+        }
+      ]
+    }
+  ]
 }

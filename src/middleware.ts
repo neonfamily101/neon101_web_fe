@@ -8,6 +8,8 @@ export function middleware(request: NextRequest) {
 
   if (host === 'neon101.ai') {
     url.hostname = 'www.neon101.ai';
+    // ✅ 포트 제거
+    url.port = ''; 
     return NextResponse.redirect(url, 301);
   }
 
@@ -15,6 +17,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|.*\\..*).*)'],
+  matcher: ['/', '/((?!_next|favicon.ico|images|videos).*)'],
 };
-
