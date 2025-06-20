@@ -145,7 +145,7 @@ export default function Hero() {
       {/* 데스크톱 배경 Spline */}
       <div
         ref={desktopSplineRef}
-        className="hidden md:block absolute inset-0 md:left-1/3 transition-opacity duration-500 ease-in-out opacity-90"
+        className="hidden md:block absolute inset-0 md:left-1/3 transition-opacity duration-500 ease-in-out opacity-90 absolute h-full"
       >
         <Spline
           scene="https://prod.spline.design/RHuCm4oT3Mj9WV3H/scene.splinecode"
