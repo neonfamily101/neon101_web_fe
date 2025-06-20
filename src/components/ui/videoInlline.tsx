@@ -7,9 +7,6 @@ interface VideoInlineProps {
     subSrc?: string;
     className?: string;
     width?: number;
-    muted?: boolean;
-    loop?: boolean;
-    playsInline?: boolean;
     autoPlay?: boolean;
     onVideoRef?: (video: HTMLVideoElement | null) => void;
 }
@@ -19,9 +16,6 @@ export default function VideoInline({
     subSrc,
     className,
     width,
-    muted = true,
-    loop = true,
-    playsInline = true,
     autoPlay = true,
     onVideoRef
 }: VideoInlineProps) {
