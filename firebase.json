@@ -1,46 +1,35 @@
 {
-  "hosting": [
-    {
-      "target": "www",
-      "public": "public/videos",
-      "ignore": ["**/.*", "**/node_modules/**"],
-      "headers": [
-        {
-          "source": "**/*.@(webm|mp4)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000, immutable"
-            },
-            {
-              "key": "Content-Encoding",
-              "value": "gzip"
-            },
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            },
-            {
-              "key": "Access-Control-Allow-Methods",
-              "value": "GET, HEAD, OPTIONS"
-            },
-            {
-              "key": "Access-Control-Allow-Headers",
-              "value": "Content-Type"
-            }
-          ]
+  "hosting": {
+    "site": "neon101",
+    "public": "public",
+    "ignore": ["**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**/*.@(webm|mp4|jpg|jpeg|png|svg|gif)",
+        "headers": [
+          { "key": "Access-Control-Allow-Origin", "value": "*" },
+          { "key": "Access-Control-Allow-Methods", "value": "GET, HEAD, OPTIONS" },
+          { "key": "Access-Control-Allow-Headers", "value": "Content-Type" },
+          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/.well-known/**",
+        "destination": "/.well-known/$1"
+      },
+      {
+        "source": "/videos/**",
+        "destination": "/videos/$1"
+      },
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "neon101-web-fe",
+          "region": "asia-northeast1"
         }
-      ]
-    },
-    {
-      "target": "root-redirect",
-      "redirects": [
-        {
-          "source": "/**",
-          "destination": "https://www.neon101.ai",
-          "type": 301
-        }
-      ]
-    }
-  ]
+      }
+    ]
+  }
 }

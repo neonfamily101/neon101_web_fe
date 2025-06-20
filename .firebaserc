@@ -1,13 +1,5 @@
 {
   "projects": {
     "default": "neon101"
-  },
-  "targets": {
-    "neon101": {
-      "hosting": {
-        "www": ["neon101"],
-        "root-redirect": ["neon101-root"]
-      }
-    }
   }
 }
