@@ -8,16 +8,17 @@ import VideoModal from './videoModal';
 // 비디오 데이터 (webm 우선, mp4 fallback)
 const videoSlides = [
   {
-    src: 'https://www.neon101.ai/videos/slideVideos/superbot101.webm',
-    subSrc: 'https://www.neon101.ai/videos/slideVideos/superbot101.mp4',
+    src: 'https://storage.googleapis.com/neon101-videos/slideVideos/superbot101.webm',
+    subSrc: 'https://storage.googleapis.com/neon101-videos/slideVideos/superbot101.mp4',
     title: 'Superbot101'
   },
   {
-    src: 'https://www.neon101.ai/videos/slideVideos/das.webm',
-    subSrc: 'https://www.neon101.ai/videos/slideVideos/das.mp4',
+    src: 'https://storage.googleapis.com/neon101-videos/slideVideos/das.webm',
+    subSrc: 'https://storage.googleapis.com/neon101-videos/slideVideos/das.mp4',
     title: 'DAS101'
   }
 ];
+
 
 
 
