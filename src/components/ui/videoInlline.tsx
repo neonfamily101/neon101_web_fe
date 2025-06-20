@@ -50,10 +50,10 @@ export default function VideoInline({
     return (
         <video
             ref={videoRef}
-            autoPlay={autoPlay}
-            muted={muted}
-            loop={loop}
-            playsInline={playsInline}
+            autoPlay
+            muted
+            loop
+            playsInline
             preload="metadata"
             className={className}
             width={width}
@@ -63,9 +63,7 @@ export default function VideoInline({
                 height: '100%'
             }}
         >
-            {/* webm 우선 */}
             <source src={src} type="video/webm" />
-            {/* mp4 fallback */}
             {subSrc && <source src={subSrc} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
