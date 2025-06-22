@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import SilverTitle from '@/components/ui/silverTitle';
-// import VideoInline from '../../ui/videoInlline';
+import VideoInline from '../../ui/videoInlline';
 import clsx from 'clsx';
-import SmartVideo from '@/components/ui/SmartVideo';
+
 interface VideoSlideProps {
     src: string;
     subSrc?: string;
@@ -57,13 +57,12 @@ export default function VideoSlide({ src, subSrc, isActive, title, onClick }: Vi
                     overflow: 'hidden'
                 }}
             >
-                <SmartVideo
-                key={`${src}-${isActive ? 'active' : 'inactive'}`}
-                webmSrc={src}
-                mp4Src={subSrc}
-                className="w-full h-full object-cover"
+                <VideoInline
+                    key={`${src}-${isActive ? 'active' : 'inactive'}`}
+                    src={src}
+                    subSrc={subSrc}
+                    className="w-full h-full object-cover"
                 />
-
             </div>
         </div>
     );
