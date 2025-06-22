@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import SilverTitle from "@/components/ui/silverTitle";
+import SmartVideo from "@/components/ui/SmartVideo"; 
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -37,7 +38,7 @@ export default function Hero() {
       className="relative mx-auto max-w-5xl px-6 pb-[8rem] md:h-screen md:max-h-[950px] md:max-w-7xl md:pb-[4rem] overflow-hidden"
     >
       {/* 📽️ 비디오 배경 */}
-      <video
+      {/* <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover z-0 opacity-90 pointer-events-none"
         muted
@@ -54,7 +55,17 @@ export default function Hero() {
           type="video/quicktime"
         />
         브라우저가 비디오 태그를 지원하지 않습니다.
-      </video>
+      </video> */}
+    <SmartVideo
+      className="absolute inset-0 w-full h-full object-cover z-0 opacity-90 pointer-events-none"
+      webmSrc="https://storage.googleapis.com/neon101-videos/heroVideos/neon101_brand_final.webm"
+      movSrc="https://storage.googleapis.com/neon101-videos/heroVideos/neon101_brand_final.mov"
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+    />
 
 
       {/* 텍스트 영역 */}
