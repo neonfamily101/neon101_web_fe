@@ -141,8 +141,11 @@ export default function Hero() {
       <div className="relative z-10 mx-auto max-w-5xl px-6 flex h-full flex-col items-center justify-between md:flex-row md:pb-24 max-md:pt-[200px]">
         <div className="origin-center-left order-2 max-w-3xl animate-hero-text-slide-up-fade sm:shrink-0 md:order-1 lg:pl-8">
           <SilverTitle className="text-center md:text-left">
-            NEON101 <br />
-            <span className="text-[2rem] md:text-[3rem]">AX Company</span>
+            {/* NEON101 */}
+             <br />
+            <span className="text-[2rem] md:text-[3rem]">
+              {/* AX Company */}
+            </span>
           </SilverTitle>
           <p className="text-base md:text-[1.125rem] md:leading-[1.5] text-slate-11 font-normal mb-8 mt-4 max-w-[30rem] text-center leading-7 md:text-left">
             {
