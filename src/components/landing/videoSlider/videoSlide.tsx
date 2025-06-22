@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import SilverTitle from '@/components/ui/silverTitle';
-import VideoInline from '../../ui/videoInlline';
+// import VideoInline from '../../ui/videoInlline';
 import clsx from 'clsx';
 import SmartVideo from '@/components/ui/SmartVideo';
 interface VideoSlideProps {

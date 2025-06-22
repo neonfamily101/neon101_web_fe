@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import VideoSlide from './videoSlide';
 import SliderDots from './sliderDots';
 import VideoModal from './videoModal';
-import SmartVideo from '@/components/ui/SmartVideo';
 // 비디오 데이터 (webm 우선, mp4 fallback)
 const videoSlides = [
   {
