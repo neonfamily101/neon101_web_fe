@@ -1,12 +1,11 @@
 "use client";
 
-// import LogoNav from "@/assets/svgs/logoNav";
+import LogoNav from "@/assets/svgs/logoNav";
 import Menu from "@/assets/svgs/menu";
 import NavButton from "./nav/navButton";
 import NavMobile from "./nav/navMobile";
 import Close from "@/assets/svgs/close";
 import { useState, useEffect } from "react";
-import LogoNew from "@/assets/svgs/logoNew";
 
 export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,7 +34,7 @@ export default function Header() {
                 <div className="bg-background absolute left-0 top-0 z-20 flex w-full flex-col items-center md:hidden">
                     <div className="flex w-full items-center px-6 py-1">
                         <div className="flex-auto">
-                            <LogoNew />
+                            <LogoNav />
                         </div>
                         {/* 모바일 메뉴 버튼 */}
                         <div className="flex flex-auto justify-end">
@@ -49,7 +48,7 @@ export default function Header() {
                 <div className="mx-auto hidden md:block h-[58px] w-full transition duration-500 ease-in-out">
                     <div className="absolute left-0 top-0 flex items-center justify-center h-full px-5 lg:w-[225px]">
                         <span data-state="closed" className="">
-                            <LogoNew />
+                            <LogoNav />
                         </span>
                     </div>
                     <ul data-orientation="horizontal" className="flex items-center justify-center gap-6" dir="ltr">
