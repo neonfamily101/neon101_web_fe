@@ -48,24 +48,25 @@ export default function VideoInline({
     }, [src, autoPlay]);
 
     return (
-        <video
-            ref={videoRef}
-            autoPlay={autoPlay}
-            muted={muted}
-            loop={loop}
-            playsInline={playsInline}
-            preload="metadata"
-            className={className}
-            width={width}
-            style={{
-                objectFit: 'cover',
-                width: '100%',
-                height: '100%'
-            }}
-        >
-            <source src={src} type="video/webm" />
-            {subSrc && <source src={subSrc} type="video/mp4" />}
-            브라우저가 비디오를 지원하지 않습니다.
-        </video>
+        <div />
+        // <video
+        //     ref={videoRef}
+        //     autoPlay={autoPlay}
+        //     muted={muted}
+        //     loop={loop}
+        //     playsInline={playsInline}
+        //     preload="metadata"
+        //     className={className}
+        //     width={width}
+        //     style={{
+        //         objectFit: 'cover',
+        //         width: '100%',
+        //         height: '100%'
+        //     }}
+        // >
+        //     <source src={src} type="video/webm" />
+        //     {subSrc && <source src={subSrc} type="video/mp4" />}
+        //     브라우저가 비디오를 지원하지 않습니다.
+        // </video>
     );
 }

@@ -20,20 +20,21 @@ export default function VideoPlayer({
     loop = false
 }: VideoPlayerProps) {
     return (
-        <video
-            controls
-            className={className}
-            width={width}
-            height={height}
-            autoPlay={autoPlay}
-            muted={muted}
-            loop={loop}
-        >
-            {/* webm 우선 */}
-            <source src={src} type="video/webm" />
-            {/* mp4 fallback */}
-            {subSrc && <source src={subSrc} type="video/mp4" />}
-            브라우저가 비디오를 지원하지 않습니다.
-        </video>
+        <div />
+        // <video
+        //     controls
+        //     className={className}
+        //     width={width}
+        //     height={height}
+        //     autoPlay={autoPlay}
+        //     muted={muted}
+        //     loop={loop}
+        // >
+        //     {/* webm 우선 */}
+        //     <source src={src} type="video/webm" />
+        //     {/* mp4 fallback */}
+        //     {subSrc && <source src={subSrc} type="video/mp4" />}
+        //     브라우저가 비디오를 지원하지 않습니다.
+        // </video>
     );
 } 
