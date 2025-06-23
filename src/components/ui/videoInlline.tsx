@@ -29,6 +29,7 @@ export default function VideoInline({
 
     // iOS 감지 (간소화)
     const isIOS = useCallback(() => {
+        if (typeof window === 'undefined') return false;
         return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     }, []);
