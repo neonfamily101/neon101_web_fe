@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface VideoInlineProps {
     src: string;
@@ -26,8 +26,12 @@ export default function VideoInline({
     onVideoRef
 }: VideoInlineProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const playPromiseRef = useRef<Promise<void> | null>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    // iOS 감지 (간소화)
+    const isIOS = useCallback(() => {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }, []);
 
     // 비디오 ref 콜백
     useEffect(() => {
@@ -36,79 +40,71 @@ export default function VideoInline({
         }
     }, [onVideoRef]);
 
-    // 소스 변경 시 재생 초기화 - 개선된 버전
+    // 간단하고 안정적인 비디오 재생 처리
     useEffect(() => {
         const video = videoRef.current;
         if (!video || !autoPlay) return;
 
-        console.log('Video source changed, resetting to start:', src);
+        console.log('Setting up video autoplay:', src);
 
-        // 이전 타이머 정리
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
+        const handleCanPlay = () => {
+            console.log('Video can play, attempting to start:', src);
+            video.play().catch(err => {
+                console.log('Video autoplay failed (expected on some browsers):', err);
+            });
+        };
 
-        // 이전 play promise가 있으면 대기
-        const handleVideoReset = async () => {
-            try {
-                // 현재 재생 중인 것이 있으면 중단
-                if (playPromiseRef.current) {
-                    await playPromiseRef.current.catch(() => {
-                        // 이전 play가 중단되는 것은 정상적인 상황
+        const handleLoadedData = () => {
+            console.log('Video data loaded:', src);
+            // iOS에서는 loadeddata 이벤트 후 약간의 딜레이를 줌
+            if (isIOS()) {
+                setTimeout(() => {
+                    video.play().catch(err => {
+                        console.log('iOS Video autoplay failed:', err);
                     });
-                }
-
-                // 비디오 상태 초기화
-                video.currentTime = 0;
-                video.load();
-
-                // 짧은 딜레이 후 재생 (load 완료 대기)
-                timeoutRef.current = setTimeout(async () => {
-                    try {
-                        // 새로운 play promise 저장
-                        playPromiseRef.current = video.play();
-                        await playPromiseRef.current;
-                        console.log('Video started successfully:', src);
-                    } catch (err) {
-                        console.log('Video autoplay failed:', err);
-                    } finally {
-                        playPromiseRef.current = null;
-                    }
                 }, 100);
-
-            } catch (err) {
-                console.log('Video reset failed:', err);
             }
         };
 
-        handleVideoReset();
+        // 이미 로드된 경우 즉시 재생 시도
+        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+            handleCanPlay();
+        } else {
+            // 이벤트 리스너 등록
+            video.addEventListener('canplay', handleCanPlay, { once: true });
+            video.addEventListener('loadeddata', handleLoadedData, { once: true });
+        }
+
+        // 루프가 제대로 작동하지 않을 경우를 대비한 이벤트 리스너
+        const handleEnded = () => {
+            console.log('Video ended, restarting:', src);
+            video.currentTime = 0;
+            video.play().catch(err => {
+                console.log('Video restart failed:', err);
+            });
+        };
+
+        if (loop) {
+            video.addEventListener('ended', handleEnded);
+        }
 
         // cleanup
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
+            video.removeEventListener('canplay', handleCanPlay);
+            video.removeEventListener('loadeddata', handleLoadedData);
+            video.removeEventListener('ended', handleEnded);
         };
-    }, [src, autoPlay]);
-
-    // 컴포넌트 언마운트 시 정리
-    useEffect(() => {
-        return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
-            playPromiseRef.current = null;
-        };
-    }, []);
+    }, [src, autoPlay, loop, isIOS]);
 
     return (
         <video
             ref={videoRef}
-            autoPlay={autoPlay}
+            autoPlay={autoPlay && muted} // muted일 때만 autoPlay 허용
             muted={muted}
             loop={loop}
             playsInline={playsInline}
-            preload="metadata"
+            {...(playsInline && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성
+            preload={isIOS() ? "metadata" : "auto"} // iOS에서는 metadata만 preload
             className={className}
             width={width}
             style={{
