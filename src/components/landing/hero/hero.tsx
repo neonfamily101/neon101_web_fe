@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 // import SilverTitle from "@/components/ui/silverTitle";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // iOS 감지 (간소화)
   const isIOS = useCallback(() => {
     if (typeof window === 'undefined') return false;
     return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }, []);
+
+  // hydration 완료 후 마운트 상태 설정
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -56,8 +62,8 @@ export default function Hero() {
           muted
           loop
           playsInline
-          {...{ 'webkit-playsinline': 'true' }} // iOS Safari 호환성
-          preload={isIOS() ? "metadata" : "auto"}
+          {...(isMounted && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성 (hydration 후)
+          preload={isMounted && isIOS() ? "metadata" : "auto"}
         >
           <source
             src="https://storage.googleapis.com/neon101-videos/heroVideos/neon101_brand_final.webm"

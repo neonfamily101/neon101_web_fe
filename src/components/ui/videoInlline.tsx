@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 interface VideoInlineProps {
     src: string;
@@ -26,12 +26,18 @@ export default function VideoInline({
     onVideoRef
 }: VideoInlineProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [isMounted, setIsMounted] = useState(false);
 
     // iOS 감지 (간소화)
     const isIOS = useCallback(() => {
         if (typeof window === 'undefined') return false;
         return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }, []);
+
+    // hydration 완료 후 마운트 상태 설정
+    useEffect(() => {
+        setIsMounted(true);
     }, []);
 
     // 비디오 ref 콜백
@@ -104,8 +110,8 @@ export default function VideoInline({
             muted={muted}
             loop={loop}
             playsInline={playsInline}
-            {...(playsInline && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성
-            preload={isIOS() ? "metadata" : "auto"} // iOS에서는 metadata만 preload
+            {...(isMounted && playsInline && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성 (hydration 후)
+            preload={isMounted && isIOS() ? "metadata" : "auto"} // iOS에서는 metadata만 preload (hydration 후)
             className={className}
             width={width}
             style={{
@@ -114,7 +120,8 @@ export default function VideoInline({
                 height: '100%'
             }}
         >
-            <source src={src} type="video/webm" />
+            {/* iOS는 webm을 지원하지 않으므로 제외 */}
+            {isMounted && !isIOS() && <source src={src} type="video/webm" />}
             {subSrc && <source src={subSrc} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
