@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import VideoCard, { ShowcaseItem } from './videoCard';
+import { useMediaQuery } from 'usehooks-ts'
 
 interface VideoCarouselProps {
     items: ShowcaseItem[];
@@ -66,6 +67,8 @@ export default function VideoCarousel({
         onSlideChange(index);
     };
 
+    const isMobile = useMediaQuery('(max-width: 768px)');
+
     const calculateCardPosition = (index: number) => {
         const n = items.length;
         let diff = index - currentIndex;
@@ -76,14 +79,14 @@ export default function VideoCarousel({
             else if (diff <= -half) diff += n;
         }
 
-        const isVisible = Math.abs(diff) <= 2;
+        const isVisible = Math.abs(diff) <= (isMobile ? 1 : 2);
         const isCenter = diff === 0;
 
         const scale = isCenter ? centerScale : sideScale;
         const opacity = isVisible ? 1 : 0;
         const pointerEvents = isVisible ? 'auto' : 'none';
 
-        const cardWidthPercent = 100 / 5; // 각 카드의 너비를 컨테이너의 1/5로 설정
+        const cardWidthPercent = isMobile ? 100 / 3 : 100 / 5; // 각 카드의 너비를 컨테이너의 1/5로 설정
         const gap = cardWidthPercent * gapRatio;
 
         const w_c = cardWidthPercent;
@@ -122,7 +125,7 @@ export default function VideoCarousel({
         <div className="w-full max-w-7xl mx-auto overflow-hidden">
             <div className="relative">
                 {/* 높이 계산을 위한 숨겨진 카드 (가장 큰 카드 기준) */}
-                <div className="w-1/5 mx-auto invisible">
+                <div className={`w-1/${isMobile ? 3 : 5} mx-auto invisible`}>
                     <div className="aspect-[3/5] rounded-xl" />
                 </div>
 
