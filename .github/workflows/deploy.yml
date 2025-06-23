@@ -20,6 +20,8 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
+
+
       # ✅ gcloud CLI 설치
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v1
