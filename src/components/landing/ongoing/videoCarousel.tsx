@@ -22,6 +22,8 @@ export default function VideoCarousel({
     gapRatio = 0.2
 }: VideoCarouselProps) {
     const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+    const playPromisesRef = useRef<{ [key: string]: Promise<void> | null }>({});
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     // 각 비디오의 음소거 상태 관리
     const [mutedStates, setMutedStates] = useState<{ [key: string]: boolean }>({});
 
@@ -34,24 +36,74 @@ export default function VideoCarousel({
         setMutedStates(initialMutedStates);
     }, [items]);
 
-    // 현재 선택된 카드의 비디오만 재생
+    // 현재 선택된 카드의 비디오만 재생 - 개선된 버전
     useEffect(() => {
-        // 모든 비디오 일시정지
-        Object.values(videoRefs.current).forEach(video => {
-            if (video) {
-                video.pause();
-            }
-        });
-
-        const currentItem = items[currentIndex];
-        if (currentItem) {
-            const currentVideo = videoRefs.current[currentItem.id];
-            if (currentVideo) {
-                currentVideo.currentTime = 0; // 비디오를 처음부터 다시 재생
-                currentVideo.play().catch(console.error);
-            }
+        // 이전 타이머 정리
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
         }
+
+        const handleVideoTransition = async () => {
+            try {
+                // 모든 비디오 일시정지 및 이전 promise 대기
+                const pausePromises = Object.entries(videoRefs.current).map(async ([id, video]) => {
+                    if (video && playPromisesRef.current[id]) {
+                        await playPromisesRef.current[id]?.catch(() => { });
+                        playPromisesRef.current[id] = null;
+                    }
+                    if (video) {
+                        video.pause();
+                    }
+                });
+
+                await Promise.all(pausePromises);
+
+                const currentItem = items[currentIndex];
+                if (currentItem) {
+                    const currentVideo = videoRefs.current[currentItem.id];
+                    if (currentVideo) {
+                        // 짧은 딜레이 후 재생 (다른 처리 완료 대기)
+                        timeoutRef.current = setTimeout(async () => {
+                            try {
+                                currentVideo.currentTime = 0;
+                                playPromisesRef.current[currentItem.id] = currentVideo.play();
+                                await playPromisesRef.current[currentItem.id];
+                                console.log('Video carousel play successful:', currentItem.id);
+                            } catch (err) {
+                                console.log('Video carousel autoplay failed:', err);
+                            } finally {
+                                playPromisesRef.current[currentItem.id] = null;
+                            }
+                        }, 200);
+                    }
+                }
+            } catch (err) {
+                console.log('Video transition failed:', err);
+            }
+        };
+
+        handleVideoTransition();
+
+        // cleanup
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
     }, [currentIndex, items]);
+
+    // 컴포넌트 언마운트 시 정리
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            // 모든 play promise 정리
+            Object.keys(playPromisesRef.current).forEach(id => {
+                playPromisesRef.current[id] = null;
+            });
+        };
+    }, []);
 
     // 카드 클릭 핸들러 - 슬라이드 변경과 음소거 해제
     const handleCardClick = (index: number) => {

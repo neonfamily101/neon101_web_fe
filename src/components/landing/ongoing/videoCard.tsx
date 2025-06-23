@@ -1,6 +1,6 @@
 'use client';
 
-// import VideoInline from '@/components/ui/videoInlline';
+import VideoInline from '@/components/ui/videoInlline';
 import clsx from 'clsx';
 
 export interface ShowcaseItem {
@@ -28,7 +28,6 @@ export default function VideoCard({
     onVideoRef,
     onClick
 }: VideoCardProps) {
-    console.log(item.videoSrc, item.videoSubSrc, muted, onVideoRef);
     return (
         <div
             style={style}
@@ -40,14 +39,14 @@ export default function VideoCard({
                 isCenter ? 'shadow-2xl' : 'shadow-lg'
             )}>
                 <div className="w-full h-full overflow-hidden">
-                    {/* <VideoInline
+                    <VideoInline
                         src={item.videoSrc}
                         subSrc={item.videoSubSrc}
                         className="w-full h-full object-cover"
                         muted={muted}
                         onVideoRef={onVideoRef}
                         autoPlay={false}
-                    /> */}
+                    />
                 </div>
             </div>
         </div>

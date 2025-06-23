@@ -117,7 +117,7 @@ export default function Hero() {
     >
       {/* ✅ 비디오 배경: 전체화면 꽉 채움 */}
       <div className="absolute inset-0 z-0">
-        {/* <video
+        <video
           ref={videoRef}
           className="w-full h-full object-cover opacity-90 pointer-events-none"
           muted
@@ -134,7 +134,7 @@ export default function Hero() {
             type="video/mp4"
           />
           브라우저가 비디오 태그를 지원하지 않습니다.
-        </video> */}
+        </video>
       </div>
 
       {/* ✅ 텍스트 콘텐츠 (패딩 유지) */}
