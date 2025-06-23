@@ -131,7 +131,7 @@ export default function Hero() {
           />
           <source
             src="https://storage.googleapis.com/neon101-videos/heroVideos/neon101_brand_final.mp4"
-            type="video/quicktime"
+            type="video/mp4"
           />
           브라우저가 비디오 태그를 지원하지 않습니다.
         </video>
