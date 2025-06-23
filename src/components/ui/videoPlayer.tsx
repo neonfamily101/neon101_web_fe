@@ -1,3 +1,5 @@
+import { useIsIOS } from "@/hooks/isIOS";
+
 interface VideoPlayerProps {
     src: string;
     subSrc?: string;
@@ -19,6 +21,8 @@ export default function VideoPlayer({
     muted = false,
     loop = false
 }: VideoPlayerProps) {
+
+    const isIOS = useIsIOS();
     return (
         <video
             controls
@@ -30,7 +34,7 @@ export default function VideoPlayer({
             loop={loop}
         >
             {/* webm 우선 */}
-            <source src={src} type="video/webm" />
+            {!isIOS() && <source src={src} type="video/webm" />}
             {/* mp4 fallback */}
             {subSrc && <source src={subSrc} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.

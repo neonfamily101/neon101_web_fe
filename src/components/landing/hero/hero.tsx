@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useIsIOS } from "@/hooks/isIOS";
+import { useEffect, useRef } from "react";
 // import SilverTitle from "@/components/ui/silverTitle";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  // iOS 감지 (간소화)
-  const isIOS = useCallback(() => {
-    if (typeof window === 'undefined') return false;
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }, []);
+  const isIOS = useIsIOS();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
