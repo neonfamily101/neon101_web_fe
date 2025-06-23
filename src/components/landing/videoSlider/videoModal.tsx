@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Close from '@/assets/svgs/close';
-import VideoPlayer from '@/components/ui/videoPlayer';
+// import VideoPlayer from '@/components/ui/videoPlayer';
 
 interface VideoModalProps {
     isOpen: boolean;
@@ -13,7 +13,7 @@ interface VideoModalProps {
 
 export default function VideoModal({ isOpen, videoSrc, videoSubSrc, title, onClose }: VideoModalProps) {
     const [isMouseInModal, setIsMouseInModal] = useState(false);
-
+    console.log(videoSrc, videoSubSrc);
     // 커서가 모달 안에 있을 때만 배경 스크롤 방지
     useEffect(() => {
         if (isOpen && isMouseInModal) {
@@ -92,13 +92,13 @@ export default function VideoModal({ isOpen, videoSrc, videoSubSrc, title, onClo
 
                 {/* 비디오 플레이어 컨테이너 */}
                 <div className="flex-1 overflow-hidden relative min-h-0">
-                    <VideoPlayer
+                    {/* <VideoPlayer
                         src={videoSrc}
                         subSrc={videoSubSrc}
                         className="absolute inset-0 w-full h-full object-contain"
                         autoPlay
                         muted
-                    />
+                    /> */}
                 </div>
             </div>
         </div>

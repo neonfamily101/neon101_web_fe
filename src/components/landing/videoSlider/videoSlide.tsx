@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import SilverTitle from '@/components/ui/silverTitle';
-import VideoInline from '../../ui/videoInlline';
+// import VideoInline from '../../ui/videoInlline';
 import clsx from 'clsx';
 
 interface VideoSlideProps {
@@ -14,6 +14,7 @@ interface VideoSlideProps {
 export default function VideoSlide({ src, subSrc, isActive, title, onClick }: VideoSlideProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
+    console.log(src, subSrc)
     useEffect(() => {
         const video = containerRef.current?.querySelector('video');
         if (!video) return;
@@ -57,12 +58,12 @@ export default function VideoSlide({ src, subSrc, isActive, title, onClick }: Vi
                     overflow: 'hidden'
                 }}
             >
-                <VideoInline
+                {/* <VideoInline
                     key={`${src}-${isActive ? 'active' : 'inactive'}`}
                     src={src}
                     subSrc={subSrc}
                     className="w-full h-full object-cover"
-                />
+                /> */}
             </div>
         </div>
     );
