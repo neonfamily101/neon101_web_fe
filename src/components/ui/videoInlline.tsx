@@ -1,7 +1,6 @@
 'use client';
 
-import { useIsIOS } from '@/hooks/isIOS';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface VideoInlineProps {
     src: string;
@@ -28,8 +27,12 @@ export default function VideoInline({
 }: VideoInlineProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
-
-    const isIOS = useIsIOS();
+    // iOS 감지 (간소화)
+    const isIOS = useCallback(() => {
+        if (typeof window === 'undefined') return false;
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }, []);
 
     // 비디오 ref 콜백
     useEffect(() => {
@@ -111,7 +114,7 @@ export default function VideoInline({
                 height: '100%'
             }}
         >
-            {!isIOS() && <source src={src} type="video/webm" />}
+            <source src={src} type="video/webm" />
             {subSrc && <source src={subSrc} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
