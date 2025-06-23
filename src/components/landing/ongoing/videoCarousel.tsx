@@ -119,13 +119,21 @@ export default function VideoCarousel({
         };
     };
 
+    const calculateCardHeight = () => {
+        if (isMobile) {
+            return "w-1/3"
+        } else {
+            return "w-1/5"
+        }
+    };
+
     if (!items.length) return null;
 
     return (
         <div className="w-full max-w-7xl mx-auto overflow-hidden">
             <div className="relative">
                 {/* 높이 계산을 위한 숨겨진 카드 (가장 큰 카드 기준) */}
-                <div className={`w-1/${isMobile ? 3 : 5} mx-auto invisible`}>
+                <div className={`${calculateCardHeight()} mx-auto invisible`}>
                     <div className="aspect-[3/5] rounded-xl" />
                 </div>
 
