@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+
 jobs:
   deploy:
     name: Build and Deploy
@@ -19,7 +19,6 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
-
 
 
       # ✅ gcloud CLI 설치
