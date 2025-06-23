@@ -94,13 +94,14 @@ export default function VideoCarousel({
 
     // 컴포넌트 언마운트 시 정리
     useEffect(() => {
+        const currentPromises = playPromisesRef.current;
         return () => {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
             }
             // 모든 play promise 정리
-            Object.keys(playPromisesRef.current).forEach(id => {
-                playPromisesRef.current[id] = null;
+            Object.keys(currentPromises).forEach(id => {
+                currentPromises[id] = null;
             });
         };
     }, []);
