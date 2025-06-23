@@ -32,7 +32,7 @@ export default function Header() {
         <header className="sticky top-0 z-40 bg-black/50" aria-label="Main" data-orientation="horizontal" dir="ltr">
             <div className="mx-auto w-full max-w-5xl px-6 md:max-w-7xl">
                 <div className="bg-background absolute left-0 top-0 z-20 flex w-full flex-col items-center md:hidden">
-                    <div className="flex w-full items-center px-6 py-4">
+                    <div className="flex w-full items-center px-6 py-1">
                         <div className="flex-auto">
                             <LogoNav />
                         </div>
