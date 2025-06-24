@@ -72,10 +72,8 @@ export default function VideoSlider() {
         <>
             <section className='flex flex-col items-center gap-[100px] pb-[8rem] md:pb-[12rem]'>
                 <div
-                    className="relative w-full h-[700px] overflow-hidden"
+                    className="relative w-full h-[80vh] md:h-[700px] overflow-hidden"
                     style={{
-                        minHeight: '700px',
-                        maxHeight: '700px',
                         contain: 'layout style paint'
                     }}
                     onMouseEnter={() => {

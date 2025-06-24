@@ -51,7 +51,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full aspect-[6/7] sm:h-[70vh] max-h-[950px] overflow-hidden"
+      className="relative w-full aspect-[5/6] sm:h-[70vh] max-h-[950px] overflow-hidden"
     >
       {/* ✅ 비디오 배경: 전체화면 꽉 채움 */}
       <div className="absolute inset-0 z-0">
