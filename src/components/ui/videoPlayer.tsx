@@ -1,4 +1,5 @@
 import { useIsIOS } from "@/hooks/isIOS";
+import { useState, useEffect } from "react";
 
 interface VideoPlayerProps {
     src: string;
@@ -23,6 +24,12 @@ export default function VideoPlayer({
 }: VideoPlayerProps) {
 
     const isIOS = useIsIOS();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     return (
         <video
             controls
@@ -33,9 +40,9 @@ export default function VideoPlayer({
             muted={muted}
             loop={loop}
         >
-            {/* webm 우선 */}
-            {!isIOS() && <source src={src} type="video/webm" />}
-            {/* mp4 fallback */}
+            {/* webm은 클라이언트 마운트 후, iOS가 아닐 때만 추가 */}
+            {mounted && !isIOS() && <source src={src} type="video/webm" />}
+            {/* mp4 먼저 */}
             {subSrc && <source src={subSrc} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.
         </video>

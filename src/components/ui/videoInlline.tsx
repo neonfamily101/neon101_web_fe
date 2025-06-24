@@ -144,7 +144,7 @@ export default function VideoInline({
             }}
         >
             {/* iOS 최적화: iOS에서는 mp4만 제공하여 불필요한 webm 요청 방지 */}
-            {isMounted && isIOS() ? (
+            {isIOS() ? (
                 subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />
             ) : (
                 <>
