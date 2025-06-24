@@ -53,36 +53,62 @@ export default function VideoInline({
         if (!video || !autoPlay) return;
 
         console.log('Setting up video autoplay:', src);
+        let hasAttemptedPlay = false;
 
-        const handleCanPlay = () => {
-            console.log('Video can play, attempting to start:', src);
-            video.play().catch(err => {
-                console.log('Video autoplay failed (expected on some browsers):', err);
-            });
+        const handlePlayAttempt = () => {
+            if (hasAttemptedPlay) return;
+            hasAttemptedPlay = true;
+
+            console.log('Video attempting to play:', src);
+            // 디바운스를 통해 중복 재생 방지
+            setTimeout(() => {
+                if (video && !video.paused) return; // 이미 재생 중이면 스킵
+                video.currentTime = 0;
+                video.play().catch(err => {
+                    console.log('Video autoplay failed (expected on some browsers):', err);
+                });
+            }, 50);
         };
 
-        const handleLoadedData = () => {
-            console.log('Video data loaded:', src);
-            // iOS에서는 loadeddata 이벤트 후 약간의 딜레이를 줌
-            if (isIOS()) {
-                setTimeout(() => {
-                    video.play().catch(err => {
-                        console.log('iOS Video autoplay failed:', err);
-                    });
-                }, 100);
+        // iOS에서는 loadeddata만 사용, 다른 브라우저는 canplay 사용
+        if (isIOS()) {
+            const handleLoadedData = () => {
+                console.log('iOS Video data loaded:', src);
+                setTimeout(handlePlayAttempt, 100);
+            };
+
+            if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+                handlePlayAttempt();
+            } else {
+                video.addEventListener('loadeddata', handleLoadedData, { once: true });
             }
-        };
 
-        // 이미 로드된 경우 즉시 재생 시도
-        if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-            handleCanPlay();
+            return () => {
+                video.removeEventListener('loadeddata', handleLoadedData);
+            };
         } else {
-            // 이벤트 리스너 등록
-            video.addEventListener('canplay', handleCanPlay, { once: true });
-            video.addEventListener('loadeddata', handleLoadedData, { once: true });
-        }
+            const handleCanPlay = () => {
+                console.log('Video can play, attempting to start:', src);
+                handlePlayAttempt();
+            };
 
-        // 루프가 제대로 작동하지 않을 경우를 대비한 이벤트 리스너
+            if (video.readyState >= 3) { // HAVE_FUTURE_DATA
+                handlePlayAttempt();
+            } else {
+                video.addEventListener('canplay', handleCanPlay, { once: true });
+            }
+
+            return () => {
+                video.removeEventListener('canplay', handleCanPlay);
+            };
+        }
+    }, [src, autoPlay, isIOS]);
+
+    // 루프 처리는 별도 useEffect로 분리
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video || !loop) return;
+
         const handleEnded = () => {
             console.log('Video ended, restarting:', src);
             video.currentTime = 0;
@@ -91,17 +117,9 @@ export default function VideoInline({
             });
         };
 
-        if (loop) {
-            video.addEventListener('ended', handleEnded);
-        }
-
-        // cleanup
-        return () => {
-            video.removeEventListener('canplay', handleCanPlay);
-            video.removeEventListener('loadeddata', handleLoadedData);
-            video.removeEventListener('ended', handleEnded);
-        };
-    }, [src, autoPlay, loop, isIOS]);
+        video.addEventListener('ended', handleEnded);
+        return () => video.removeEventListener('ended', handleEnded);
+    }, [src, loop]);
 
     return (
         <video
@@ -117,12 +135,20 @@ export default function VideoInline({
             style={{
                 objectFit: 'cover',
                 width: '100%',
-                height: '100%'
+                height: '100%',
+                opacity: isMounted ? 1 : 0, // 로딩 완료 시 페이드인
+                transition: 'opacity 0.5s ease-in-out' // 부드러운 전환
             }}
         >
-            {/* iOS는 webm을 지원하지 않으므로 제외 */}
-            {isMounted && !isIOS() && <source src={src} type="video/webm" />}
-            {subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />}
+            {/* iOS 최적화: iOS에서는 mp4만 제공하여 불필요한 webm 요청 방지 */}
+            {isMounted && isIOS() ? (
+                subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />
+            ) : (
+                <>
+                    <source src={src} type="video/webm" />
+                    {subSrc && <source src={subSrc} type="video/mp4" />}
+                </>
+            )}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
     );

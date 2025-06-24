@@ -43,64 +43,78 @@ export default function VideoCarousel({
             clearTimeout(timeoutRef.current);
         }
 
+        const currentSlideRef = currentIndex; // 현재 슬라이드 인덱스 캡처 (race condition 방지)
+
         const handleVideoTransition = async () => {
             try {
-                // 모든 비디오 일시정지 및 이전 promise 정리
-                Object.entries(videoRefs.current).forEach(([id, video]) => {
+                // 1단계: 모든 비디오 즉시 정지 및 Promise 대기
+                const stopPromises = Object.entries(videoRefs.current).map(async ([id, video]) => {
                     if (video) {
-                        video.pause();
-                        // 이전 play promise 정리 (중복 호출 방지)
-                        if (playPromisesRef.current[id]) {
-                            playPromisesRef.current[id] = null;
+                        try {
+                            video.pause();
+                            // 진행 중인 play promise가 있으면 완료 대기
+                            if (playPromisesRef.current[id]) {
+                                await playPromisesRef.current[id].catch(() => {
+                                    // promise rejection은 정상적인 상황
+                                });
+                                playPromisesRef.current[id] = null;
+                            }
+                            video.currentTime = 0;
+                        } catch {
+                            // 개별 비디오 정지 실패는 무시
                         }
                     }
                 });
+
+                // 모든 정지 작업 완료 대기
+                await Promise.all(stopPromises);
 
                 const currentItem = items[currentIndex];
                 if (currentItem) {
                     const currentVideo = videoRefs.current[currentItem.id];
                     if (currentVideo) {
-                        timeoutRef.current = setTimeout(async () => {
-                            try {
-                                // 1. DOM에 요소가 있는지 확인
-                                if (!document.body.contains(currentVideo)) {
-                                    console.log('Video element removed from DOM, skipping play');
-                                    return;
-                                }
-
-                                // 2. 이미 재생 중인지 확인 (중복 호출 방지)
-                                if (playPromisesRef.current[currentItem.id]) {
-                                    console.log('Video already playing, skipping');
-                                    return;
-                                }
-
-                                // 3. seek과 play의 충돌 방지
-                                if (currentVideo.currentTime !== 0) {
-                                    currentVideo.currentTime = 0;
-                                    // seeked 이벤트를 기다림
-                                    await new Promise(resolve => {
-                                        currentVideo.addEventListener('seeked', resolve, { once: true });
-                                        // 5초 타임아웃 (혹시 seeked가 발생하지 않을 경우)
-                                        setTimeout(resolve, 5000);
-                                    });
-                                }
-
-                                // 4. 다시 DOM 확인 (seeked 대기 중 제거될 수 있음)
-                                if (!document.body.contains(currentVideo)) {
-                                    console.log('Video element removed during seek, skipping play');
-                                    return;
-                                }
-
-                                // 5. 안전한 play() 호출
-                                playPromisesRef.current[currentItem.id] = currentVideo.play();
-                                await playPromisesRef.current[currentItem.id];
-                                console.log('Video carousel play successful:', currentItem.id);
-                            } catch (err) {
-                                console.log('Video carousel autoplay failed:', err);
-                            } finally {
-                                playPromisesRef.current[currentItem.id] = null;
+                        // 안전한 딜레이 후 재생
+                        timeoutRef.current = setTimeout(() => {
+                            // 슬라이드가 변경되었는지 확인
+                            if (currentSlideRef !== currentIndex) {
+                                console.log('Slide changed during delay, skipping video play');
+                                return;
                             }
-                        }, 300); // 딜레이 증가로 안정성 확보
+
+                            // DOM 확인
+                            if (!document.body.contains(currentVideo)) {
+                                console.log('Video element removed from DOM, skipping play');
+                                return;
+                            }
+
+                            // 이미 재생 중인지 확인
+                            if (playPromisesRef.current[currentItem.id]) {
+                                console.log('Video already playing, skipping');
+                                return;
+                            }
+
+                            // 안전한 재생 시도
+                            try {
+                                currentVideo.currentTime = 0;
+                                const playPromise = currentVideo.play();
+                                playPromisesRef.current[currentItem.id] = playPromise;
+                                playPromise
+                                    .then(() => {
+                                        console.log('Video carousel play successful:', currentItem.id);
+                                        if (playPromisesRef.current[currentItem.id] === playPromise) {
+                                            playPromisesRef.current[currentItem.id] = null;
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log('Video carousel autoplay failed:', err);
+                                        if (playPromisesRef.current[currentItem.id] === playPromise) {
+                                            playPromisesRef.current[currentItem.id] = null;
+                                        }
+                                    });
+                            } catch (err) {
+                                console.log('Video play attempt failed:', err);
+                            }
+                        }, 600); // 딜레이 증가로 안정성 확보
                     }
                 }
             } catch (err) {
