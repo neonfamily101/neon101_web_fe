@@ -122,7 +122,7 @@ export default function VideoInline({
         >
             {/* iOS는 webm을 지원하지 않으므로 제외 */}
             {isMounted && !isIOS() && <source src={src} type="video/webm" />}
-            {subSrc && <source src={subSrc} type="video/mp4" />}
+            {subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
     );
