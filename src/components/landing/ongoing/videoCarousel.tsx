@@ -47,11 +47,13 @@ export default function VideoCarousel({
 
         const handleVideoTransition = () => {
             try {
-                // 즉시 모든 비디오 중지 (복잡한 async 로직 제거)
+                // 중앙이 아닌 비디오들만 일시정지 (로딩은 유지)
                 Object.entries(videoRefs.current).forEach(([id, video]) => {
                     if (video) {
-                        video.pause();
-                        video.currentTime = 0; // seek 즉시 실행
+                        const isCurrentVideo = items[currentIndex]?.id === id;
+                        if (!isCurrentVideo) {
+                            video.pause(); // 일시정지만, currentTime은 유지하여 로딩 상태 보존
+                        }
                         // play promise 정리
                         if (playPromisesRef.current[id]) {
                             playPromisesRef.current[id] = null;
@@ -85,7 +87,8 @@ export default function VideoCarousel({
                                 return;
                             }
 
-                            // 단순한 재생 시도 (seek은 이미 완료됨)
+                            // 중앙 비디오 재생 (처음부터 시작)
+                            currentVideo.currentTime = 0;
                             currentVideo.play().then(() => {
                                 console.log('Video carousel play successful:', currentItem.id);
                             }).catch(err => {

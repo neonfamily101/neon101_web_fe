@@ -45,7 +45,7 @@ export default function VideoCard({
                         className="w-full h-full object-cover"
                         muted={muted}
                         onVideoRef={onVideoRef}
-                        autoPlay={false}
+                        autoPlay={true} // iOS 호환성을 위해 muted autoplay 허용
                     />
                 </div>
             </div>
