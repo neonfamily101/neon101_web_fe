@@ -143,14 +143,14 @@ export default function VideoInline({
                 transition: 'opacity 2s ease-in-out' // 부드러운 전환
             }}
         >
-            {/* iOS 최적화: iOS에서는 mp4만 제공하여 불필요한 webm 요청 방지 */}
-            {isIOS() ? (
-                subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />
-            ) : (
+            {/* 소스 순서: webm 먼저(비-iOS), mp4 두번째 */}
+            {isMounted && !isIOS() ? (
                 <>
                     <source src={src} type="video/webm" />
-                    {subSrc && <source src={subSrc} type="video/mp4" />}
+                    {subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />}
                 </>
+            ) : (
+                subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />
             )}
             브라우저가 비디오를 지원하지 않습니다.
         </video>
