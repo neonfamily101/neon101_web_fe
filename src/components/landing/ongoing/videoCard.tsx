@@ -45,7 +45,7 @@ export default function VideoCard({
                         className="w-full h-full object-cover"
                         muted={muted}
                         onVideoRef={onVideoRef}
-                        autoPlay={false}
+                        autoPlay={false} // 중앙 카드만 재생
                     />
                 </div>
             </div>
