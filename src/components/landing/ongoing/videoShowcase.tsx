@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SilverTitle from '@/components/ui/silverTitle';
 import SliderDots from '@/components/landing/videoSlider/sliderDots';
 import VideoCarousel from './videoCarousel';
@@ -27,6 +27,8 @@ export default function VideoShowcase({
     gapRatio = 0.2
 }: VideoShowcaseProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef<HTMLDivElement | null>(null);
 
     // 자동 재생 기능
     useEffect(() => {
@@ -39,6 +41,22 @@ export default function VideoShowcase({
         return () => clearInterval(interval);
     }, [autoPlay, autoPlayInterval, items.length, currentIndex]);
 
+    // 섹션이 뷰포트에 들어오면 활성화
+    useEffect(() => {
+        const node = sectionRef.current;
+        if (!node) return;
+
+        const io = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setIsVisible(true);
+                io.disconnect(); // 한 번만
+            }
+        }, { threshold: 0.1 });
+
+        io.observe(node);
+        return () => io.disconnect();
+    }, []);
+
     const goToSlide = (index: number) => {
         setCurrentIndex(index);
     };
@@ -48,16 +66,18 @@ export default function VideoShowcase({
     const currentItem = items[currentIndex];
 
     return (
-        <div className={clsx('relative w-full', className)}>
+        <div ref={sectionRef} className={clsx('relative w-full', className)}>
             {/* 비디오 카루셀 */}
-            <VideoCarousel
-                items={items}
-                currentIndex={currentIndex}
-                onSlideChange={goToSlide}
-                centerScale={centerScale}
-                sideScale={sideScale}
-                gapRatio={gapRatio}
-            />
+            {isVisible && (
+                <VideoCarousel
+                    items={items}
+                    currentIndex={currentIndex}
+                    onSlideChange={goToSlide}
+                    centerScale={centerScale}
+                    sideScale={sideScale}
+                    gapRatio={gapRatio}
+                />
+            )}
 
             {/* 텍스트 영역 */}
             {currentItem && (

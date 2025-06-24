@@ -140,7 +140,7 @@ export default function VideoInline({
                 width: '100%',
                 height: '100%',
                 opacity: isMounted ? 1 : 0, // 로딩 완료 시 페이드인
-                transition: 'opacity 1.5s ease-in-out' // 부드러운 전환
+                transition: 'opacity 2s ease-in-out' // 부드러운 전환
             }}
         >
             {/* iOS 최적화: iOS에서는 mp4만 제공하여 불필요한 webm 요청 방지 */}
