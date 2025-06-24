@@ -27,7 +27,7 @@ export default function Hero() {
         if (!video) return;
 
         if (entry.isIntersecting) {
-          console.log('Hero video in view, attempting to play');
+          // console.log('Hero video in view, attempting to play');
           // 간단한 재생 시도
           video.play().catch(err => {
             console.log('Hero video autoplay failed:', err);
@@ -51,7 +51,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen max-h-[950px] overflow-hidden"
+      className="relative w-full h-[80vh] max-h-[950px] overflow-hidden"
     >
       {/* ✅ 비디오 배경: 전체화면 꽉 채움 */}
       <div className="absolute inset-0 z-0">

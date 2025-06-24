@@ -51,18 +51,18 @@ export default function VideoInline({
     useEffect(() => {
         const video = videoRef.current;
         if (!video || !autoPlay) {
-            console.log('Video autoplay disabled for:', src);
+            // console.log('Video autoplay disabled for:', src);
             return;
         }
 
-        console.log('Setting up video autoplay:', src);
+        // console.log('Setting up video autoplay:', src);
         let hasAttemptedPlay = false;
 
         const handlePlayAttempt = () => {
             if (hasAttemptedPlay) return;
             hasAttemptedPlay = true;
 
-            console.log('Video attempting to play:', src);
+            // console.log('Video attempting to play:', src);
             // 디바운스를 통해 중복 재생 방지
             setTimeout(() => {
                 if (video && !video.paused) return; // 이미 재생 중이면 스킵
@@ -76,7 +76,7 @@ export default function VideoInline({
         // iOS에서는 loadeddata만 사용, 다른 브라우저는 canplay 사용
         if (isIOS()) {
             const handleLoadedData = () => {
-                console.log('iOS Video data loaded:', src);
+                // console.log('iOS Video data loaded:', src);
                 setTimeout(handlePlayAttempt, 100);
             };
 
@@ -91,7 +91,7 @@ export default function VideoInline({
             };
         } else {
             const handleCanPlay = () => {
-                console.log('Video can play, attempting to start:', src);
+                // console.log('Video can play, attempting to start:', src);
                 handlePlayAttempt();
             };
 
@@ -113,7 +113,7 @@ export default function VideoInline({
         if (!video || !loop) return;
 
         const handleEnded = () => {
-            console.log('Video ended, restarting:', src);
+            // console.log('Video ended, restarting:', src);
             video.currentTime = 0;
             video.play().catch(err => {
                 console.log('Video restart failed:', err);
@@ -140,7 +140,7 @@ export default function VideoInline({
                 width: '100%',
                 height: '100%',
                 opacity: isMounted ? 1 : 0, // 로딩 완료 시 페이드인
-                transition: 'opacity 2s ease-in-out' // 부드러운 전환
+                transition: 'opacity 1.5s ease-in-out' // 부드러운 전환
             }}
         >
             {/* 소스 순서: webm 먼저(비-iOS), mp4 두번째 */}

@@ -77,19 +77,19 @@ export default function VideoCarousel({
                         timeoutRef.current = setTimeout(() => {
                             // 슬라이드가 변경되었는지 확인
                             if (currentSlideRef !== currentIndex) {
-                                console.log('Slide changed during delay, skipping video play');
+                                // console.log('Slide changed during delay, skipping video play');
                                 return;
                             }
 
                             // DOM 확인
                             if (!document.body.contains(currentVideo)) {
-                                console.log('Video element removed from DOM, skipping play');
+                                // console.log('Video element removed from DOM, skipping play');
                                 return;
                             }
 
                             // 이미 재생 중인지 확인
                             if (playPromisesRef.current[currentItem.id]) {
-                                console.log('Video already playing, skipping');
+                                // console.log('Video already playing, skipping');
                                 return;
                             }
 
@@ -100,7 +100,7 @@ export default function VideoCarousel({
                                 playPromisesRef.current[currentItem.id] = playPromise;
                                 playPromise
                                     .then(() => {
-                                        console.log('Video carousel play successful:', currentItem.id);
+                                        // console.log('Video carousel play successful:', currentItem.id);
                                         if (playPromisesRef.current[currentItem.id] === playPromise) {
                                             playPromisesRef.current[currentItem.id] = null;
                                         }

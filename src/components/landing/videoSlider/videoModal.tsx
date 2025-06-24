@@ -18,11 +18,11 @@ export default function VideoModal({ isOpen, videoSrc, videoSubSrc, title, onClo
         if (isOpen && isMouseInModal) {
             // 커서가 모달 안에 있을 때 body 스크롤 방지
             document.body.style.overflow = 'hidden';
-            console.log('Mouse in modal - scroll disabled');
+            // console.log('Mouse in modal - scroll disabled');
         } else {
             // 커서가 모달 밖에 있거나 모달이 닫혔을 때 body 스크롤 복원
             document.body.style.overflow = 'unset';
-            console.log('Mouse out of modal or modal closed - scroll enabled');
+            // console.log('Mouse out of modal or modal closed - scroll enabled');
         }
 
         // cleanup 함수: 컴포넌트 언마운트 시 스크롤 복원
