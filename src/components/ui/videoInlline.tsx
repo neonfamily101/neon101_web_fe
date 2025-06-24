@@ -11,7 +11,6 @@ interface VideoInlineProps {
     loop?: boolean;
     playsInline?: boolean;
     autoPlay?: boolean;
-    forcePreload?: boolean; // autoPlay가 false여도 미리 로딩 강제
     onVideoRef?: (video: HTMLVideoElement | null) => void;
 }
 
@@ -24,7 +23,6 @@ export default function VideoInline({
     loop = true,
     playsInline = true,
     autoPlay = true,
-    forcePreload = false,
     onVideoRef
 }: VideoInlineProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -52,13 +50,13 @@ export default function VideoInline({
     // 간단하고 안정적인 비디오 재생 처리
     useEffect(() => {
         const video = videoRef.current;
-        if (!video || (!autoPlay && !forcePreload)) return;
+        if (!video || !autoPlay) return;
 
         console.log('Setting up video autoplay:', src);
         let hasAttemptedPlay = false;
 
         const handlePlayAttempt = () => {
-            if (hasAttemptedPlay || !autoPlay) return; // forcePreload시에는 재생하지 않음
+            if (hasAttemptedPlay) return;
             hasAttemptedPlay = true;
 
             console.log('Video attempting to play:', src);
@@ -71,15 +69,11 @@ export default function VideoInline({
         if (isIOS()) {
             const handleLoadedData = () => {
                 console.log('iOS Video data loaded:', src);
-                if (autoPlay) {
-                    setTimeout(handlePlayAttempt, 100);
-                }
+                setTimeout(handlePlayAttempt, 100);
             };
 
             if (video.readyState >= 2) { // HAVE_CURRENT_DATA
-                if (autoPlay) {
-                    handlePlayAttempt();
-                }
+                handlePlayAttempt();
             } else {
                 video.addEventListener('loadeddata', handleLoadedData, { once: true });
             }
@@ -94,9 +88,7 @@ export default function VideoInline({
             };
 
             if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-                if (autoPlay) {
-                    handlePlayAttempt();
-                }
+                handlePlayAttempt();
             } else {
                 video.addEventListener('canplay', handleCanPlay, { once: true });
             }
@@ -105,7 +97,7 @@ export default function VideoInline({
                 video.removeEventListener('canplay', handleCanPlay);
             };
         }
-    }, [src, autoPlay, forcePreload, isIOS]);
+    }, [src, autoPlay, isIOS]);
 
     // 루프 처리는 별도 useEffect로 분리
     useEffect(() => {
@@ -124,13 +116,6 @@ export default function VideoInline({
         return () => video.removeEventListener('ended', handleEnded);
     }, [src, loop]);
 
-    // preload 값 결정
-    const getPreloadValue = () => {
-        if (!isMounted) return "auto";
-        if (forcePreload) return "metadata"; // 강제 preload 시 auto
-        return isIOS() ? "metadata" : "auto";
-    };
-
     return (
         <video
             ref={videoRef}
@@ -139,7 +124,7 @@ export default function VideoInline({
             loop={loop}
             playsInline={playsInline}
             {...(isMounted && playsInline && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성 (hydration 후)
-            preload={getPreloadValue()} // forcePreload 고려한 preload 값
+            preload={isMounted && isIOS() ? "metadata" : "auto"} // iOS에서는 metadata만 preload (hydration 후)
             className={className}
             width={width}
             style={{
@@ -150,7 +135,7 @@ export default function VideoInline({
         >
             {/* iOS 최적화: iOS에서는 mp4만 제공하여 불필요한 webm 요청 방지 */}
             {isMounted && isIOS() ? (
-                subSrc && <source src={subSrc} type="video/mp4" />
+                subSrc && <source src={subSrc + "#t=0.1"} type="video/mp4" />
             ) : (
                 <>
                     <source src={src} type="video/webm" />

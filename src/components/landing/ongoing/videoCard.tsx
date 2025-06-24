@@ -46,7 +46,6 @@ export default function VideoCard({
                         muted={muted}
                         onVideoRef={onVideoRef}
                         autoPlay={false} // 중앙 카드만 재생
-                        forcePreload={true} // iOS에서 미리보기를 위해 로딩 강제
                     />
                 </div>
             </div>
