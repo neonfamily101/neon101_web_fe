@@ -11,6 +11,7 @@ interface VideoInlineProps {
     loop?: boolean;
     playsInline?: boolean;
     autoPlay?: boolean;
+    forcePreload?: boolean; // autoPlay가 false여도 미리 로딩 강제
     onVideoRef?: (video: HTMLVideoElement | null) => void;
 }
 
@@ -23,6 +24,7 @@ export default function VideoInline({
     loop = true,
     playsInline = true,
     autoPlay = true,
+    forcePreload = false,
     onVideoRef
 }: VideoInlineProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,13 +52,13 @@ export default function VideoInline({
     // 간단하고 안정적인 비디오 재생 처리
     useEffect(() => {
         const video = videoRef.current;
-        if (!video || !autoPlay) return;
+        if (!video || (!autoPlay && !forcePreload)) return;
 
         console.log('Setting up video autoplay:', src);
         let hasAttemptedPlay = false;
 
         const handlePlayAttempt = () => {
-            if (hasAttemptedPlay) return;
+            if (hasAttemptedPlay || !autoPlay) return; // forcePreload시에는 재생하지 않음
             hasAttemptedPlay = true;
 
             console.log('Video attempting to play:', src);
@@ -69,11 +71,15 @@ export default function VideoInline({
         if (isIOS()) {
             const handleLoadedData = () => {
                 console.log('iOS Video data loaded:', src);
-                setTimeout(handlePlayAttempt, 100);
+                if (autoPlay) {
+                    setTimeout(handlePlayAttempt, 100);
+                }
             };
 
             if (video.readyState >= 2) { // HAVE_CURRENT_DATA
-                handlePlayAttempt();
+                if (autoPlay) {
+                    handlePlayAttempt();
+                }
             } else {
                 video.addEventListener('loadeddata', handleLoadedData, { once: true });
             }
@@ -88,7 +94,9 @@ export default function VideoInline({
             };
 
             if (video.readyState >= 3) { // HAVE_FUTURE_DATA
-                handlePlayAttempt();
+                if (autoPlay) {
+                    handlePlayAttempt();
+                }
             } else {
                 video.addEventListener('canplay', handleCanPlay, { once: true });
             }
@@ -97,7 +105,7 @@ export default function VideoInline({
                 video.removeEventListener('canplay', handleCanPlay);
             };
         }
-    }, [src, autoPlay, isIOS]);
+    }, [src, autoPlay, forcePreload, isIOS]);
 
     // 루프 처리는 별도 useEffect로 분리
     useEffect(() => {
@@ -116,6 +124,13 @@ export default function VideoInline({
         return () => video.removeEventListener('ended', handleEnded);
     }, [src, loop]);
 
+    // preload 값 결정
+    const getPreloadValue = () => {
+        if (!isMounted) return "auto";
+        if (forcePreload) return "auto"; // 강제 preload 시 auto
+        return isIOS() ? "metadata" : "auto";
+    };
+
     return (
         <video
             ref={videoRef}
@@ -124,7 +139,7 @@ export default function VideoInline({
             loop={loop}
             playsInline={playsInline}
             {...(isMounted && playsInline && { 'webkit-playsinline': 'true' })} // iOS Safari 호환성 (hydration 후)
-            preload={isMounted && isIOS() ? "metadata" : "auto"} // iOS에서는 metadata만 preload (hydration 후)
+            preload={getPreloadValue()} // forcePreload 고려한 preload 값
             className={className}
             width={width}
             style={{

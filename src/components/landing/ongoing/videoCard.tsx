@@ -45,7 +45,8 @@ export default function VideoCard({
                         className="w-full h-full object-cover"
                         muted={muted}
                         onVideoRef={onVideoRef}
-                        autoPlay={true} // iOS 호환성을 위해 muted autoplay 허용
+                        autoPlay={false} // 중앙 카드만 재생
+                        forcePreload={true} // iOS에서 미리보기를 위해 로딩 강제
                     />
                 </div>
             </div>

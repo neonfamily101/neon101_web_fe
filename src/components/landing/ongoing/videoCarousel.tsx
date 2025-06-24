@@ -47,13 +47,11 @@ export default function VideoCarousel({
 
         const handleVideoTransition = () => {
             try {
-                // 중앙이 아닌 비디오들만 일시정지 (로딩은 유지)
+                // 모든 비디오 일시정지 (forcePreload로 로딩은 유지됨)
                 Object.entries(videoRefs.current).forEach(([id, video]) => {
                     if (video) {
-                        const isCurrentVideo = items[currentIndex]?.id === id;
-                        if (!isCurrentVideo) {
-                            video.pause(); // 일시정지만, currentTime은 유지하여 로딩 상태 보존
-                        }
+                        video.pause();
+                        video.currentTime = 0; // 처음부터 시작하도록 리셋
                         // play promise 정리
                         if (playPromisesRef.current[id]) {
                             playPromisesRef.current[id] = null;
