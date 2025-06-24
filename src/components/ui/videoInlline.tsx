@@ -127,7 +127,7 @@ export default function VideoInline({
     // preload 값 결정
     const getPreloadValue = () => {
         if (!isMounted) return "auto";
-        if (forcePreload) return "auto"; // 강제 preload 시 auto
+        if (forcePreload) return "metadata"; // 강제 preload 시 auto
         return isIOS() ? "metadata" : "auto";
     };
 
