@@ -17,6 +17,10 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
         onClose();
         router.push("#contact");
     }
+    const goDemo = () => {
+        onClose();
+        // router.push("#demo");
+    }
 
     return (
         <div className="overflow-y-auto opacity-0 overflow-x-hidden h-[calc(100dvh-72px)] flex w-full py-4 md:hidden duration-200 ease-in-out animate-header-slide-down-fade" id="mobile-menu" style={{ opacity: 1 }}>
@@ -25,6 +29,7 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
                     <NavMobileButton text="Home" onClick={goHome} />
                     <NavMobileButton text="Service" onClick={goService} />
                     <NavMobileButton text="Contact" onClick={goContact} />
+                    <NavMobileButton text="Demo" onClick={goDemo} />
                 </div>
             </div>
         </div>

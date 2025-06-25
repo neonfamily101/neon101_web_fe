@@ -55,6 +55,7 @@ export default function Header() {
                         <NavButton text="Home" href="#home" />
                         <NavButton text="Service" href="#service" />
                         <NavButton text="Contact" href="#contact" />
+                        <NavButton text="Demo" href="#demo" />
                     </ul>
                 </div>
             </div>

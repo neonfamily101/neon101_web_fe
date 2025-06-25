@@ -12,7 +12,7 @@ import FadeInSection from "@/components/common/fadeInSection";
 
 export default function Home() {
   return (
-    <div className="bg-black">
+    <div className="bg-black" translate="no">
       <Header />
       <div id="home">
         <Hero />
