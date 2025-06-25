@@ -65,7 +65,12 @@ export default function Footer() {
                             <Mail />
                         </IconBlock>
                         <IconBlock>
+                            <a href="https://www.linkedin.com/in/%EB%A7%88%EC%BC%80%ED%8C%85%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EC%BD%94%EB%A6%AC%EC%95%84%EC%9D%B4%EC%A0%95%ED%9B%88/" // 원하는 LinkedIn URL로 변경
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Visit our LinkedIn">
                             <LinkedIn />
+                            </a>
                         </IconBlock>
                         <IconBlock>
                             <Youtube />
