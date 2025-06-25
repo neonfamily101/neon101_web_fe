@@ -1,101 +1,85 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 
 interface CountUpNumberProps {
-    /** Target number to count up to */
-    target: number;
-    /** Duration of animation in milliseconds (default 3000ms) */
-    duration?: number;
-    /** Intersection threshold (default 0.3) */
-    threshold?: number;
-    /** Delay before starting animation in milliseconds (default 300ms) */
-    startDelay?: number;
-    /** Optional prefix (e.g., "Trusted by ") */
-    prefix?: string;
-    /** Optional suffix (e.g., "+ companies") */
-    suffix?: string;
-    /** Custom className */
-    className?: string;
+  start?: number // ✅ 추가
+  target: number
+  duration?: number
+  threshold?: number
+  startDelay?: number
+  prefix?: string
+  suffix?: string
+  className?: string
 }
 
 export default function CountUpNumber({
-    target,
-    duration = 3000,
-    threshold = 0.3,
-    startDelay = 300,
-    prefix = "",
-    suffix = "",
-    className = ""
+  start = 0,
+  target,
+  duration = 3000,
+  threshold = 0.3,
+  startDelay = 300,
+  prefix = "",
+  suffix = "",
+  className = "",
 }: CountUpNumberProps) {
-    const ref = useRef<HTMLSpanElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [currentNumber, setCurrentNumber] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [currentNumber, setCurrentNumber] = useState(start) // ✅ 초기값을 start로 설정
+  const hasStarted = useRef(false)
 
-    // Intersection Observer to trigger animation when element comes into view
-    useEffect(() => {
-        const node = ref.current;
-        if (!node) return;
+  useEffect(() => {
+    const node = ref.current
+    if (!node || isVisible) return
 
-        // Early exit if already visible (prevents re-observing)
-        if (isVisible) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.unobserve(entry.target)
+        }
+      },
+      { threshold }
+    )
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(true);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            {
-                threshold,
-            }
-        );
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [threshold, isVisible])
 
-        observer.observe(node);
+  useEffect(() => {
+    if (!isVisible || hasStarted.current) return
+    hasStarted.current = true
 
-        return () => observer.disconnect();
-    }, [threshold, isVisible]);
+    const timeout = setTimeout(() => {
+      const startTime = Date.now()
 
-    // Number animation when becomes visible
-    useEffect(() => {
-        if (!isVisible) return;
+      const animate = () => {
+        const now = Date.now()
+        const elapsed = now - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const eased = progress * progress * progress
+        const newValue = Math.floor(start + (target - start) * eased)
 
-        // Add delay before starting animation
-        const delayTimeout = setTimeout(() => {
-            const startTime = Date.now();
-            const startNumber = 0;
+        setCurrentNumber(newValue)
 
-            const updateNumber = () => {
-                const now = Date.now();
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        } else {
+          setCurrentNumber(target)
+        }
+      }
 
-                // Ease-in function: starts slow and accelerates
-                const easeIn = progress * progress * progress;
+      animate()
+    }, startDelay)
 
-                const newNumber = Math.floor(startNumber + (target - startNumber) * easeIn);
+    return () => clearTimeout(timeout)
+  }, [isVisible, start, target, duration, startDelay])
 
-                setCurrentNumber(newNumber);
-
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                } else {
-                    setCurrentNumber(target); // Ensure we end exactly at target
-                }
-            };
-
-            requestAnimationFrame(updateNumber);
-        }, startDelay);
-
-        return () => clearTimeout(delayTimeout);
-    }, [isVisible, target, duration, startDelay]);
-
-    return (
-        <span ref={ref} className={className}>
-            {prefix}{currentNumber.toLocaleString()}{suffix}
-        </span>
-    );
-} 
+  return (
+    <span ref={ref} className={className}>
+      {prefix}
+      {currentNumber.toLocaleString()}
+      {suffix}
+    </span>
+  )
+}
