@@ -171,7 +171,7 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="border-t border-slate-8 mt-8 pt-6 text-center text-sm text-slate-11 flex justify-between">
-                    <p>@2024 NEON101. All rights reserved.</p>
+                    <p>@2025 NEON101. All rights reserved.</p>
                     <div className="flex gap-4 items-center">
                         <IconBlock>
                             <Mail />
