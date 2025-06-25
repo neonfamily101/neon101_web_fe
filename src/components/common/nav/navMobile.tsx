@@ -9,6 +9,10 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
         onClose();
         router.push("/#home");
     }
+    const goConsulting = () => {
+        onClose();
+        router.push("/");
+    }
     const goService = () => {
         onClose();
         router.push("/#service");
@@ -27,6 +31,7 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
             <div className="relative">
                 <div className="absolute top-0 left-0 min-h-full px-6 w-screen">
                     <NavMobileButton text="Home" onClick={goHome} />
+                    <NavMobileButton text="Consulting" onClick={goConsulting} />
                     <NavMobileButton text="Service" onClick={goService} />
                     <NavMobileButton text="Contact" onClick={goContact} />
                     <NavMobileButton text="Demo" onClick={goDemo} />

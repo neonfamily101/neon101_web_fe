@@ -53,6 +53,7 @@ export default function Header() {
                     </div>
                     <ul data-orientation="horizontal" className="flex items-center justify-center gap-6" dir="ltr">
                         <NavButton text="Home" href="/#home" />
+                        <NavButton text="Consulting" href="/" />
                         <NavButton text="Service" href="/#service" />
                         <NavButton text="Contact" href="/#contact" />
                         <NavButton text="Demo" href="/demo" />

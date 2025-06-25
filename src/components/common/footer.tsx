@@ -35,6 +35,7 @@ export default function Footer() {
                     {/* Quick Links */}
                     <FooterBlock title="Company">
                         <LinkTextBlock text="Home" href="#home" />
+                        <LinkTextBlock text="Consulting" href="/" />
                         <LinkTextBlock text="Service" href="#service" />
                         <LinkTextBlock text="Contact" href="#contact" />
                         <LinkTextBlock text="Demo" href="/demo" />
