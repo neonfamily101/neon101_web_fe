@@ -146,26 +146,26 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <FooterBlock title="Company">
-                        <LinkTextBlock text="Home" />
-                        <LinkTextBlock text="Service" />
-                        <LinkTextBlock text="Contact" />
+                        <LinkTextBlock text="Home" href="#home" />
+                        <LinkTextBlock text="Service" href="#service" />
+                        <LinkTextBlock text="Contact" href="#contact" />
                     </FooterBlock>
 
                     {/* Partner Links */}
                     <FooterBlock title="Partner">
-                        <LinkTextBlock text="For individuals" />
-                        <LinkTextBlock text="For freelancers" />
-                        <LinkTextBlock text="For teams" />
-                        <LinkTextBlock text="For enterprises" />
+                        <TextBlock text="For individuals" />
+                        <TextBlock text="For freelancers" />
+                        <TextBlock text="For teams" />
+                        <TextBlock text="For enterprises" />
                     </FooterBlock>
 
                     {/* Resources Links */}
                     <FooterBlock title="Resources">
-                        <LinkTextBlock text="Support" />
-                        <LinkTextBlock text="Security" />
-                        <LinkTextBlock text="Preferences" />
-                        <LinkTextBlock text="Privacy Policy" />
-                        <LinkTextBlock text="Terms of Use" />
+                        <TextBlock text="Support" />
+                        <TextBlock text="Security" />
+                        <TextBlock text="Preferences" />
+                        <TextBlock text="Privacy Policy" />
+                        <TextBlock text="Terms of Use" />
                     </FooterBlock>
                 </div>
 
@@ -200,9 +200,15 @@ function FooterBlock({ title, children }: { title: string, children: React.React
     );
 }
 
-function LinkTextBlock({ text }: { text: string }) {
+function TextBlock({ text }: { text: string }) {
     return (
         <li><span className="text-slate-11">{text}</span></li>
+    );
+}
+
+function LinkTextBlock({ text, href }: { text: string, href: string }) {
+    return (
+        <li><a href={href} className="text-slate-11">{text}</a></li>
     );
 }
 
