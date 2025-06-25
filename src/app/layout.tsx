@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import clsx from 'clsx';
 
@@ -7,6 +7,7 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
+const jetbrainsMono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "NEON101 - 맞춤형 AI Transformation 서비스",
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body
         className={clsx(
           inter.variable,
+          jetbrainsMono.variable,
           'bg-background font-arial text-[#ededed] antialiased selection:bg-[#00fff61d] selection:text-[#67ffded2]'
         )}
       >

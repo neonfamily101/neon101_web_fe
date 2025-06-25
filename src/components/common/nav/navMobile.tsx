@@ -7,19 +7,19 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
 
     const goHome = () => {
         onClose();
-        router.push("#home");
+        router.push("/#home");
     }
     const goService = () => {
         onClose();
-        router.push("#service");
+        router.push("/#service");
     }
     const goContact = () => {
         onClose();
-        router.push("#contact");
+        router.push("/#contact");
     }
     const goDemo = () => {
         onClose();
-        // router.push("#demo");
+        router.push("/demo");
     }
 
     return (

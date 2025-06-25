@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: oklch(0 0% 100%);
+  --color-foreground: oklch(0.224 0.084 264.36);
+  --color-card: oklch(0 0% 100%);
+  --color-card-foreground: oklch(0.224 0.084 264.36);
+  --color-popover: oklch(0 0% 100%);
+  --color-popover-foreground: oklch(0.224 0.084 264.36);
+  --color-primary: oklch(0.224 0.474 264.36);
+  --color-primary-foreground: oklch(0.98 0.4 255);
+  --color-secondary: oklch(0.96 0.4 255);
+  --color-secondary-foreground: oklch(0.224 0.474 264.36);
+  --color-muted: oklch(0.96 0.4 255);
+  --color-muted-foreground: oklch(0.469 0.163 255.37);
+  --color-accent: oklch(0.96 0.4 255);
+  --color-accent-foreground: oklch(0.224 0.474 264.36);
+  --color-destructive: oklch(0.602 0.842 29.23);
+  --color-destructive-foreground: oklch(0.98 0.4 255);
+  --color-border: oklch(0.914 0.318 255.25);
+  --color-input: oklch(0.914 0.318 255.25);
+  --color-ring: oklch(0.224 0.84 264.36);
+  --radius: 0.5rem;
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 0 0% 3%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 5%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 0 0% 95%;
+  --primary-foreground: 0 0% 5%;
+  --secondary: 0 0% 8%;
+  --secondary-foreground: 0 0% 95%;
+  --muted: 0 0% 8%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 0 0% 8%;
+  --accent-foreground: 0 0% 95%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 95%;
+  --border: 0 0% 12%;
+  --input: 0 0% 12%;
+  --ring: 0 0% 20%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Matrix-style animations */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes terminal-blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes subtle-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(34, 197, 94, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+  }
+}
+
+@keyframes code-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.matrix-char {
+  position: absolute;
+  color: #22c55e;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  opacity: 0.1;
+  animation: matrix-rain 10s linear infinite;
+}
+
+.terminal-cursor::after {
+  content: "|";
+  animation: terminal-blink 1s infinite;
+  color: #22c55e;
+}
+
+.code-block {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 15, 15, 0.9) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.dev-card {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.dev-card:hover {
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #22c55e, transparent);
+  animation: code-scan 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease-out;
+}
+
+.animate-subtle-glow {
+  animation: subtle-glow 2s ease-in-out infinite;
+}
+
+.text-matrix {
+  color: #22c55e;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.text-cyber {
+  background: linear-gradient(45deg, #22c55e, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-matrix {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.bg-terminal {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(5, 5, 5, 0.95) 100%);
+}
+
+
+.animate-slide-up {
+  opacity: 0;
+  scale: 0.95;
+  transform: translateY(1.5rem);
+  filter: blur(2px);
+  transition: all 1s ease-out;
+}
+
+.in-view {
+  opacity: 1;
+  scale: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
