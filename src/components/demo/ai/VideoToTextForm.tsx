@@ -134,6 +134,7 @@ import { Label } from "@/components/demo/ui/label"
 import { AIFormLayout } from "@/components/demo/AIFormLayout"
 import { ResultBox } from "@/components/demo/ResultBox"
 import { Upload } from "lucide-react"
+import { getEndpoint } from "@/components/common/url"
 
 export default function VideoSummarizerForm() {
   const [url, setUrl] = useState("")
@@ -174,7 +175,7 @@ export default function VideoSummarizerForm() {
     setError("")
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/summarize-video", {
+      const response = await fetch(getEndpoint("/summarize-video"), {
         method: "POST",
         body: formData
       })

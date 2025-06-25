@@ -8,6 +8,7 @@ import { Textarea } from "@/components/demo/ui/textarea"
 import { AIFormLayout } from "@/components/demo/AIFormLayout"
 import { ResultBox } from "@/components/demo/ResultBox"
 import { Monitor } from "lucide-react"
+import { getEndpoint } from "@/components/common/url"
 
 export default function InterviewCoachForm() {
   const [jobField, setJobField] = useState("")
@@ -24,7 +25,7 @@ export default function InterviewCoachForm() {
     setLoadingQ(true)
     setError("")
     try {
-      const res = await fetch('http://127.0.0.1:8000/generate-questions', {
+      const res = await fetch(getEndpoint('/generate-questions'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ job_field: jobField })
       })
@@ -46,7 +47,7 @@ export default function InterviewCoachForm() {
     setLoadingE(prev => prev.map((v, i) => i === index ? true : v))
     setError("")
     try {
-      const res = await fetch('http://127.0.0.1:8000/evaluate-answer', {
+      const res = await fetch(getEndpoint('/evaluate-answer'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: questions[index], answer: answers[index] })
       })

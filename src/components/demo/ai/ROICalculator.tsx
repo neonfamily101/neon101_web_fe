@@ -7,6 +7,7 @@ import { Label } from "@/components/demo/ui/label"
 import { AIFormLayout } from "@/components/demo/AIFormLayout"
 import { ResultBox } from "@/components/demo/ResultBox"
 import { TrendingUp } from "lucide-react"
+import { getEndpoint } from "@/components/common/url"
 
 interface ROICalcRequest {
   ad_spend: number
@@ -47,7 +48,7 @@ export default function ROICalculator() {
     }
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/calculate-roi', {
+      const res = await fetch(getEndpoint('/calculate-roi'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

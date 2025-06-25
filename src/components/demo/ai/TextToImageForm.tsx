@@ -10,6 +10,7 @@ import { AIFormLayout } from "@/components/demo/AIFormLayout"
 import { ResultBox } from "@/components/demo/ResultBox"
 import { useFormLogic } from "@/components/demo/UseFormLogic"
 import { ImageIcon, Play } from "lucide-react"
+import { getEndpoint } from "@/components/common/url"
 
 export function TextToImageForm() {
   const [prompt, setPrompt] = useState("")
@@ -25,7 +26,7 @@ export function TextToImageForm() {
     setError("")
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/generate-image", {
+      const response = await fetch(getEndpoint("/generate-image"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: prompt })

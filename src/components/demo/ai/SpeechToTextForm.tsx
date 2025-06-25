@@ -118,6 +118,7 @@ import { AIFormLayout } from "@/components/demo/AIFormLayout"
 import { ResultBox } from "@/components/demo/ResultBox"
 import { useFormLogic } from "@/components/demo/UseFormLogic"
 import { Mic, Play } from "lucide-react"
+import { getEndpoint } from "@/components/common/url"
 
 export function SpeechToTextForm() {
   const [isRecording, setIsRecording] = useState(false)
@@ -167,7 +168,7 @@ export function SpeechToTextForm() {
     setError("")
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/summarize-speech", {
+      const response = await fetch(getEndpoint("/summarize-speech"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ full_text: transcript })

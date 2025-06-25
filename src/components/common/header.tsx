@@ -29,9 +29,9 @@ export default function Header() {
     }, [isMobileMenuOpen]);
 
     return (
-        <header className="sticky top-0 z-40 bg-black md:bg-black/50" aria-label="Main" data-orientation="horizontal" dir="ltr">
+        <header className="sticky top-0 z-40" aria-label="Main" data-orientation="horizontal" dir="ltr">
             <div className="mx-auto w-full max-w-5xl px-6 md:max-w-7xl">
-                <div className="bg-background absolute left-0 top-0 z-20 flex w-full flex-col items-center md:hidden">
+                <div className="bg-black/50 absolute left-0 top-0 z-20 flex w-full flex-col items-center md:hidden">
                     <div className="flex w-full items-center px-6 py-1">
                         <div className="flex-auto">
                             <LogoNav />

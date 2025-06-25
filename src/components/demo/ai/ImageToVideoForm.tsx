@@ -169,6 +169,7 @@ import { Textarea } from "@/components/demo/ui/textarea";
 import { AIFormLayout } from "@/components/demo/AIFormLayout";
 import { ResultBox } from "@/components/demo/ResultBox";
 import { Play, Download } from "lucide-react";
+import { getEndpoint } from "@/components/common/url";
 
 export function ImageToVideoForm() {
   const [imageUrl, setImageUrl] = useState("");
@@ -208,7 +209,7 @@ export function ImageToVideoForm() {
       if (prompt.trim()) form.append("prompt", prompt.trim());
 
       const createRes = await fetch(
-        "http://127.0.0.1:8000/image-to-video/create",
+        getEndpoint("/image-to-video/create"),
         { method: "POST", body: form }
       );
       if (!createRes.ok) {
@@ -227,7 +228,7 @@ export function ImageToVideoForm() {
           return;
         }
         const statusRes = await fetch(
-          `http://127.0.0.1:8000/image-to-video/${task_id}`
+          getEndpoint(`/image-to-video/${task_id}`)
         );
         const data = await statusRes.json();
         if (data.task_status === "succeed") {
