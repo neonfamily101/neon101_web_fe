@@ -30,7 +30,7 @@ export default function ConsultingPage() {
     "/images/consulting/data_world_design.jpg",
     "images/consulting/big_data_analysis.01.jpg",
     "images/consulting/machine_learning.jpg",
-    "images/consulting/test.01.jpg",
+    "images/consulting/ai_transformation.jpg",
     "images/consulting/ax_marketing.jpg"
   ]
 
