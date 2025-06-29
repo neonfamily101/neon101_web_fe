@@ -37,7 +37,7 @@ const AsciiBinaryFlow: React.FC = () => {
                 }
                 html += '<br>';
             }
-            canvas.innerHTML = html;
+            canvas!.innerHTML = html;
         }
         
         // Update grid
