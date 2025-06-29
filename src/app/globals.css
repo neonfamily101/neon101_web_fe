@@ -196,3 +196,83 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Consulting Hero Section Styles */
+.consulting-hero-container {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.consulting-hero-content {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.consulting-hero-text {
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.blinking-cursor {
+  font-weight: 700;
+  color: #ffffff;
+  animation: blink 1s step-end infinite;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+@media (max-width: 768px) {
+  .consulting-hero-container { padding: 1rem; }
+  .consulting-hero-text { font-size: clamp(2rem, 10vw, 4rem); }
+}
+
+/* Scroll Pages Section Styles */
+.scroll-section {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.scroll-text-holder {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 0);
+  -webkit-clip-path: inset(0 0 0 0);
+}
+
+.scroll-fixed-text {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

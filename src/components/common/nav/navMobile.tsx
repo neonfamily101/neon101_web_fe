@@ -11,7 +11,7 @@ export default function NavMobile({ onClose }: { onClose: () => void }) {
     }
     const goConsulting = () => {
         onClose();
-        router.push("/");
+        router.push("/consulting");
     }
     const goService = () => {
         onClose();
