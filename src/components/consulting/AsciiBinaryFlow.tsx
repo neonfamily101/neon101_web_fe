@@ -10,8 +10,10 @@ const AsciiBinaryFlow: React.FC = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        let width = 65;
-        let height = 65;
+        // Responsive grid size - smaller on mobile to reduce visual clutter
+        const isMobile = window.innerWidth <= 768;
+        let width = isMobile ? 35 : 65;
+        let height = isMobile ? 35 : 65;
         let grid: string[][] = [];
         let time = 0;
         let animationFrameId: number;

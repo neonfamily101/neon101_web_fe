@@ -252,7 +252,28 @@ body {
 
 @media (max-width: 768px) {
   .consulting-hero-container { padding: 1rem; }
-  .consulting-hero-text { font-size: clamp(2rem, 10vw, 4rem); }
+  .consulting-hero-text { 
+    font-size: clamp(2rem, 10vw, 4rem);
+    /* Override gradient on mobile for pure white text */
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+  }
+  
+  /* Reduce AsciiBinaryFlow visual impact on mobile */
+  .consulting-hero-container > div:first-child {
+    opacity: 0.15 !important;
+    filter: blur(1px);
+  }
+  
+  /* Fix blinking cursor color on mobile */
+  .blinking-cursor {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+  }
 }
 
 /* Scroll Pages Section Styles */
